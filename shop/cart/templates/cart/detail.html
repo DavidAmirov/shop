@@ -1,0 +1,61 @@
+{% extends "eshop/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Корзина
+{% endblock title %}
+
+{% block content %}
+    <h1>Корзина</h1>
+    <table class='cart'>
+        <thead>
+            <tr>
+                <th>Фотография</th>
+                <th>Продукт</th>
+                <th>Количество</th>
+                <th>Удалить</th>
+                <th>Цена</th>
+                <th>Сумма</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+                {% with product=item.product %}
+                    <tr>
+                        <td>
+                            <a href='{{ product.get_absolute_url }}'>
+                                <img src='{% if product.image %}{{ product.image.url }}{% else %}{% static "img/noimg.jpg" %}{% endif %}'>
+                            </a>
+                        </td>
+                        <td>{{ product.name }}</td>
+                        <td>
+                            <form action='{% url "cart:cart_add" product.id %}' method='post'>
+                                {{ item.update_quantity.quantity }}
+                                {{ item.update_quantity.override }}
+                                <input type='submit' value='Изменить'>
+                                {% csrf_token %}
+                            </form>
+                        </td>
+                        <td>
+                            <form action='{% url "cart:cart_remove" product.id %}' method='post'>
+                                <input type='submit' value='Удалить'>
+                                {% csrf_token %}
+                            </form>
+                        </td>
+                        <td class='num'>{{ item.price }}</td>
+                        <td class='num'>{{ item.total_price }}</td>
+                    </tr>
+                {% endwith %}
+            {% endfor %}
+            <tr class='total'>
+                <td>Сумма</td>
+                <td colspan=4></td>
+                <td class='num'>{{ cart.get_total_price }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class='text-right'>
+        <a href='{% url "eshop:product_list" %}' class='button light'>Перейти в каталог</a>
+        <a href='#' class='button'>Все супер</a>
+{% endblock content %}
