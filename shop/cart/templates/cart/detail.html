@@ -43,19 +43,19 @@
                                 {% csrf_token %}
                             </form>
                         </td>
-                        <td class='num'>{{ item.price }}</td>
-                        <td class='num'>{{ item.total_price }}</td>
+                        <td class='num'>{{ item.price }}₽</td>
+                        <td class='num'>{{ item.total_price }}₽</td>
                     </tr>
                 {% endwith %}
             {% endfor %}
             <tr class='total'>
                 <td>Сумма</td>
                 <td colspan=4></td>
-                <td class='num'>{{ cart.get_total_price }}</td>
+                <td class='num'>{{ cart.get_total_price }}₽</td>
             </tr>
         </tbody>
     </table>
     <p class='text-right'>
         <a href='{% url "eshop:product_list" %}' class='button light'>Перейти в каталог</a>
-        <a href='#' class='button'>Все супер</a>
+        <a href='{% url "orders:order_create" %}' class='button'>Оформить</a>
 {% endblock content %}
