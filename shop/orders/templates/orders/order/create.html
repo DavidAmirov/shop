@@ -14,7 +14,11 @@
             </li>
             {% endfor %}
         </ul>
-        <p>Сумма заказа: {{ cart.get_total_price }}₽</p>
+        {% if cart.coupon %}
+            <p>Сумма заказа: {{ cart.get_total_price }}₽
+            <p>Скидка: {{ cart.get_discount|floatformat:2 }}₽</p>
+        {% endif %}
+            <p>К оплате: {{ cart.get_total_price_after_discount|floatformat:2 }}₽</p>
     </div>
     <form method='post' class='order-form'>
         {{ form.as_p }}
